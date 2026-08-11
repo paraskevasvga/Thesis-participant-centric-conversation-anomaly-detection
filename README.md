@@ -16,58 +16,69 @@ The complete methodology, experimental analysis, results, discussion, and conclu
 
 ## Experimental Pipeline and Notebook Map
 
-The diagram below shows the experimental progression of the dissertation and maps each major stage to the corresponding notebook(s) in this repository.
+The diagram below summarises the experimental progression of the dissertation. Each number shown before an experimental stage is a repository stage identifier; the same identifier is used in the table below to map that stage to its exact notebook file.
 
 ```mermaid
 flowchart TD
 
-    A["Seamless Interaction Dataset<br/><br/>01_data_preparation/<br/>01_download_and_preprocess_seamless_interaction.ipynb"]
+    A["01 Data preparation"] --> B["02 Direct monolithic baseline"]
 
-    A --> B["Direct Monolithic Baseline<br/><br/>02_direct_baseline/<br/>01_direct_monolithic_video_only_baseline.ipynb"]
+    B --> C["03 Participant-centric redesign"]
 
-    B --> C["Participant-Centric Redesign"]
+    C --> S["03.1 Semantic evidence"]
+    C --> T1["03.2 Temporal evidence development"]
+    C --> P["03.4 Participation evidence"]
 
-    C --> S1["Semantic Evidence<br/><br/>03_isolated_branches/<br/>01_semantic_normal_vs_wrong_partner.ipynb"]
+    T1 --> T2["03.3 Selected temporal representation"]
 
-    C --> T1["Temporal Evidence Development<br/><br/>03_isolated_branches/<br/>02_temporal_full_development_pipeline.ipynb"]
-
-    T1 --> T2["Selected Temporal Representation<br/><br/>03_isolated_branches/<br/>03_temporal_selected_representation_reported_isolated_result.ipynb"]
-
-    C --> P1["Participation Evidence Development<br/><br/>03_isolated_branches/<br/>04_participation_branch_development.ipynb"]
-
-    S1 --> DB
+    S --> DB["04.0 Build common 400-case evidence database"]
     T2 --> DB
-    P1 --> DB
+    P --> DB
 
-    DB["Build Common 400-Case Structured Evidence Database<br/><br/>04_consolidation/<br/>00_build_consolidation_evidence_database.ipynb"]
+    DB --> CF{"04 Consolidation format comparison"}
 
-    DB --> CF{"Consolidation Format Comparison"}
+    CF --> C1["04.1 Binary only"]
+    CF --> C2["04.2 Structured R1"]
+    CF --> C3["04.3 Free-form rationale"]
+    CF --> C4["04.4 Structured R1 + rationale"]
 
-    CF --> C1["Binary Only<br/><br/>04_consolidation/<br/>01_binary_only_consolidation.ipynb"]
+    C2 --> A1["05.1 Participation ablation"]
+    A1 --> A2["05.2 Local temporal ablation"]
+    A2 --> A3["05.3 Global temporal ablation"]
+    A3 --> A4["05.4 Semantic ablation"]
 
-    CF --> C2["Structured R1<br/><br/>04_consolidation/<br/>02_structured_r1_consolidation.ipynb"]
+    A4 --> R["06.1 Semantic policy refinement"]
+    R --> F1["06.2 Semantic payload ablation and Setup F1"]
 
-    CF --> C3["Free-Form Rationale<br/><br/>04_consolidation/<br/>03_free_form_rationale_consolidation.ipynb"]
+    F1 --> FT["07 Targeted semantic QLoRA"]
 
-    CF --> C4["Structured R1 + Rationale<br/><br/>04_consolidation/<br/>04_structured_r1_with_free_form_rationale_consolidation.ipynb"]
-
-    C2 --> A1["Participation Branch Ablation<br/>Selected: speaks only<br/><br/>05_ablations/participation/<br/>01_participation_branch_ablation.ipynb"]
-
-    A1 --> A2["Local Temporal Ablation<br/>Selected: response offsets only<br/><br/>05_ablations/temporal/<br/>02_local_temporal_branch_ablation.ipynb"]
-
-    A2 --> A3["Global Temporal Ablation<br/>Selected: full global branch<br/><br/>05_ablations/temporal/<br/>03_global_temporal_branch_ablation.ipynb"]
-
-    A3 --> A4["Semantic Branch Ablation<br/>Cross-Branch Interference Identified<br/><br/>05_ablations/semantic/<br/>04_semantic_branch_ablation.ipynb"]
-
-    A4 --> R1["Semantic Policy Refinement<br/><br/>06_setup_f1/<br/>01_semantic_policy_refinement.ipynb"]
-
-    R1 --> F1["Semantic Payload Ablation → Setup F1<br/><br/>06_setup_f1/<br/>02_setup_f1_semantic_payload_ablation.ipynb"]
-
-    F1 --> FT["Targeted Semantic QLoRA Fine-Tuning<br/>+ Adapter-Held-Out Evaluation<br/><br/>07_finetuning/<br/>01_targeted_semantic_qlora_finetuning.ipynb"]
-
-    FT --> U1["Build Final Unseen Source-Disjoint Database<br/>17 Sources → 68 Cases<br/><br/>08_final_source_disjoint_evaluation/<br/>01_build_final_unseen_source_disjoint_database.ipynb"]
-
-    U1 --> U2["Final Frozen F1 vs Fine-Tuned F1 Evaluation<br/><br/>08_final_source_disjoint_evaluation/<br/>02_frozen_vs_finetuned_final_source_disjoint_evaluation.ipynb"]
+    FT --> U1["08.1 Build final unseen database"]
+    U1 --> U2["08.2 Frozen vs fine-tuned final evaluation"]
 ```
 
-The repository folders are numbered according to this progression. Later sections of this README describe, for each notebook, its role in the dissertation, required inputs, generated outputs, reported results, and dependencies on earlier stages.
+### Notebook mapping
+
+| Stage | Notebook |
+|---|---|
+| **01** | `01_data_preparation/01_download_and_preprocess_seamless_interaction.ipynb` |
+| **02** | `02_direct_baseline/01_direct_monolithic_video_only_baseline.ipynb` |
+| **03.1** | `03_isolated_branches/01_semantic_normal_vs_wrong_partner.ipynb` |
+| **03.2** | `03_isolated_branches/02_temporal_full_development_pipeline.ipynb` |
+| **03.3** | `03_isolated_branches/03_temporal_selected_representation_reported_isolated_result.ipynb` |
+| **03.4** | `03_isolated_branches/04_participation_branch_development.ipynb` |
+| **04.0** | `04_consolidation/00_build_consolidation_evidence_database.ipynb` |
+| **04.1** | `04_consolidation/01_binary_only_consolidation.ipynb` |
+| **04.2** | `04_consolidation/02_structured_r1_consolidation.ipynb` |
+| **04.3** | `04_consolidation/03_free_form_rationale_consolidation.ipynb` |
+| **04.4** | `04_consolidation/04_structured_r1_with_free_form_rationale_consolidation.ipynb` |
+| **05.1** | `05_ablations/participation/01_participation_branch_ablation.ipynb` |
+| **05.2** | `05_ablations/temporal/02_local_temporal_branch_ablation.ipynb` |
+| **05.3** | `05_ablations/temporal/03_global_temporal_branch_ablation.ipynb` |
+| **05.4** | `05_ablations/semantic/04_semantic_branch_ablation.ipynb` |
+| **06.1** | `06_setup_f1/01_semantic_policy_refinement.ipynb` |
+| **06.2** | `06_setup_f1/02_setup_f1_semantic_payload_ablation.ipynb` |
+| **07** | `07_finetuning/01_targeted_semantic_qlora_finetuning.ipynb` |
+| **08.1** | `08_final_source_disjoint_evaluation/01_build_final_unseen_source_disjoint_database.ipynb` |
+| **08.2** | `08_final_source_disjoint_evaluation/02_frozen_vs_finetuned_final_source_disjoint_evaluation.ipynb` |
+
+The numbering follows the repository structure. The sections below explain what each notebook does, which dissertation experiment it corresponds to, what inputs it requires, what artifacts it produces, and which subsequent notebooks depend on it.
